@@ -21,23 +21,23 @@ import { useForm } from "react-hook-form";
 import { FaGithub } from "react-icons/fa";
 import { FcGoogle } from "react-icons/fc";
 import { z } from "zod";
-const formSchema = z.object({
-  name: z.string().min(1, "Name is required"),
-  email: z.string().min(1, "Email is required").email("Invalid email"),
-  password: z.string().min(6, "Minimum 6 characters required"),
-});
+import { useRegister } from "../api/use-signup";
+import { registerSchema } from "../schema";
 
 const SignUpCard = () => {
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
+  const { mutate } = useRegister();
+  const form = useForm<z.infer<typeof registerSchema>>({
+    resolver: zodResolver(registerSchema),
     defaultValues: {
       name: "",
       email: "",
       password: "",
     },
   });
-  const onSubmit = (values: z.infer<typeof formSchema>) => {
-    console.log(values);
+  const onSubmit = (values: z.infer<typeof registerSchema>) => {
+    mutate({
+      json: values,
+    });
   };
   return (
     <Card className="w-full h-full md:w-[487px] border-none shadow-none">
@@ -140,6 +140,15 @@ const SignUpCard = () => {
           </Button>
         </CardContent>
       </div>
+      <div className="px-7">
+        <DottedSeparator />
+      </div>
+      <CardContent className="p-7 flex items-center justify-center">
+        <p>Already have an account?</p>
+        <Link href={"/sign-in"} className="">
+          <span className="text-blue-700">&nbsp; Sign in</span>
+        </Link>
+      </CardContent>
     </Card>
   );
 };

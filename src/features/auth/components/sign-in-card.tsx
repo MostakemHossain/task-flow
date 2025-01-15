@@ -10,26 +10,27 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { zodResolver } from "@hookform/resolvers/zod";
+import Link from "next/link";
 import { useForm } from "react-hook-form";
 import { FaGithub } from "react-icons/fa";
 import { FcGoogle } from "react-icons/fc";
 import { z } from "zod";
-
-const formSchema = z.object({
-  email: z.string().min(1, "Email is required").email("Invalid email"),
-  password: z.string().min(1, "Password is required"),
-});
+import { useLogin } from "../api/use-login";
+import { loginSchema } from "../schema";
 
 const SignInCard = () => {
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
+  const { mutate } = useLogin();
+  const form = useForm<z.infer<typeof loginSchema>>({
+    resolver: zodResolver(loginSchema),
     defaultValues: {
       email: "",
       password: "",
     },
   });
-  const onSubmit = (values: z.infer<typeof formSchema>) => {
-    console.log(values);
+  const onSubmit = (values: z.infer<typeof loginSchema>) => {
+    mutate({
+      json: values,
+    });
   };
 
   return (
@@ -82,31 +83,40 @@ const SignInCard = () => {
           </form>
         </Form>
       </CardContent>
-      <div className="">
-        <div className="px-7 mb-2">
-          <DottedSeparator />
-        </div>
-        <CardContent className="p-7 flex flex-col gap-y-4">
-          <Button
-            disabled={false}
-            variant={"secondary"}
-            size={"lg"}
-            className="w-full"
-          >
-            <FcGoogle className="mr-2 size-5" />
-            Login With Google
-          </Button>
-          <Button
-            disabled={false}
-            variant={"secondary"}
-            size={"lg"}
-            className="w-full"
-          >
-            <FaGithub className="mr-2 size-5" />
-            Login With Github
-          </Button>
-        </CardContent>
+
+      <div className="px-7 mb-2">
+        <DottedSeparator />
       </div>
+      <CardContent className="p-7 flex flex-col gap-y-4">
+        <Button
+          disabled={false}
+          variant={"secondary"}
+          size={"lg"}
+          className="w-full"
+        >
+          <FcGoogle className="mr-2 size-5" />
+          Login With Google
+        </Button>
+        <Button
+          disabled={false}
+          variant={"secondary"}
+          size={"lg"}
+          className="w-full"
+        >
+          <FaGithub className="mr-2 size-5" />
+          Login With Github
+        </Button>
+      </CardContent>
+
+      <div className="px-7">
+        <DottedSeparator />
+      </div>
+      <CardContent className="p-7 flex items-center justify-center">
+        <p>Don&apos;t have an account? </p>
+        <Link href={"/sign-up"} className="">
+          <span className="text-blue-700">&nbsp; Sign up</span>
+        </Link>
+      </CardContent>
     </Card>
   );
 };
