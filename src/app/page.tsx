@@ -1,11 +1,24 @@
-import { Button } from "@/components/ui/button";
+"use client";
 
-const page = () => {
+import { useCurrent } from "@/features/auth/api/use-current";
+import { useRouter } from "next/navigation";
+import { useEffect } from "react";
+
+const Page = () => {
+  const router = useRouter();
+  const { data, isLoading } = useCurrent();
+
+  useEffect(() => {
+    if (!data && !isLoading) {
+      router.push("/sign-in");
+    }
+  }, [data, isLoading, router]);
+
   return (
     <div>
-      <Button variant={"muted"}>Hello</Button>
+      only visible to authorized
     </div>
   );
 };
 
-export default page;
+export default Page;
