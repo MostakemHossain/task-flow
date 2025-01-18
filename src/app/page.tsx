@@ -1,20 +1,10 @@
-"use client";
-
-import { useCurrent } from "@/features/auth/api/use-current";
+import { getCurrent } from "@/features/auth/actions";
 import { UserButton } from "@/features/auth/components/user-button";
-import { useRouter } from "next/navigation";
-import { useEffect } from "react";
+import { redirect } from "next/navigation";
 
-const Page = () => {
-  const router = useRouter();
-  const { data, isLoading } = useCurrent();
-
-  useEffect(() => {
-    if (!data && !isLoading) {
-      router.push("/sign-in");
-    }
-  }, [data, isLoading, router]);
-
+export default async function Home () {
+  const user=await getCurrent();
+  if(!user) redirect("/sign-in")
   return (
     <div>
       <UserButton />
@@ -22,4 +12,4 @@ const Page = () => {
   );
 };
 
-export default Page;
+

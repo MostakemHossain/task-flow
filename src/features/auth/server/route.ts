@@ -1,4 +1,4 @@
-import { AUTH_COOKIE } from "@/app/(auth)/constant";
+
 import { createAdminClient } from "@/lib/appwrite";
 import { sessionMiddleware } from "@/lib/session-middleware";
 import { zValidator } from "@hono/zod-validator";
@@ -6,6 +6,7 @@ import { Hono } from "hono";
 import { deleteCookie, setCookie } from "hono/cookie";
 import { ID } from "node-appwrite";
 import { loginSchema, registerSchema } from "../schema";
+import { AUTH_COOKIE } from "../constant";
 
 const app = new Hono()
   .get("/current", sessionMiddleware, (c) => {

@@ -21,9 +21,10 @@ type AdditionalContext = {
   };
 };
 
-import { AUTH_COOKIE } from "@/app/(auth)/constant";
+
 import { getCookie } from "hono/cookie";
 import { createMiddleware } from "hono/factory";
+import { AUTH_COOKIE } from "@/features/auth/constant";
 
 export const sessionMiddleware = createMiddleware<AdditionalContext>(
   async (c, next) => {
