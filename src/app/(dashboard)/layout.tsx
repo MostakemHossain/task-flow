@@ -1,3 +1,4 @@
+import Navbar from "@/components/Navbar";
 import Sidebar from "@/components/Sidebar";
 import React from "react";
 
@@ -9,8 +10,9 @@ const DashboardLayout = ({ children }: { children: React.ReactNode }) => {
             <Sidebar/>
             
         </div>
-        <div className="lg:pl-[264px]">
+        <div className="lg:pl-[264px] w-full">
           <div className="mx-auto max-w-screen-2xl h-full">
+            <Navbar/>
             <main className="h-full py-8 px-6 flex flex-col">{children}</main>
           </div>
         </div>
